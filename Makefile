@@ -8,6 +8,8 @@ test:
 	clear
 
 	echo Starting test *********************************************************
+	TWITTER_CONSUMER_KEY=mV6ZNQc5H66Bku5S2032cdtxo \
+	TWITTER_CONSUMER_SECRET=F2xXSCHsjSNtGwVl3tWSKp5NiscuzpGgkDbTP2NP8bm7Tw6x6g \
 	./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \

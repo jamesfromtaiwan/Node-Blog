@@ -33,7 +33,6 @@ var boot 			= require('../app').boot,
 						} else {
 							expect(res.text).not.to.contain('<h2><a href="/articles/' + item.slug + '">' + item.title);
 						}
-						console.log(item.title, res.text); 
 					});
 					done();
 				});

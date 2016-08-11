@@ -6,11 +6,11 @@ var userSchema = new mongoose.Schema({
 		set: function (val) {
 			return val.trim().toLowerCase();
 		},
-		validate: [
-	  		function(email) {
+		validate: {
+	  		validator: function(email) {
 				return (email.match(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i) != null)},
-			'Invalid email'
-		]
+			message: 'Invalid email'
+		}
 	},
 	password: String,
 	admin: {

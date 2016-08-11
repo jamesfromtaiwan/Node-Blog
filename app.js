@@ -1,6 +1,7 @@
 var TWITTER_CONSUMER_KEY = process.env.TWITTER_CONSUMER_KEY;
 var TWITTER_CONSUMER_SECRET = process.env.TWITTER_CONSUMER_SECRET;
 
+// Dependencies
 var express 	= require('express'),
 	http		= require('http'),
 	routes 		= require('./routes'),
@@ -10,8 +11,9 @@ var express 	= require('express'),
 	dbUrl		= process.env.MONGOHQ_URL || 'mongodb://127.0.0.1:27017/blog',
 	db 			= mongoose.connect(dbUrl,{db: {native_parser: true}}),
 	assert		= require('assert'),
-	everyauth = require('everyauth');
+	everyauth 	= require('everyauth');
 
+// Database Connection
 var dbConnect = mongoose.connection;
 dbConnect.on('error', console.error.bind(console, 'connection error:'));
 dbConnect.once('open', function() {
@@ -26,6 +28,8 @@ cookieParser = require('cookie-parser'),
 bodyParser = require('body-parser'),
 methodOverride = require('method-override');
 
+
+// EveryAuth Config Start
 everyauth.debug = true;
 everyauth.twitter
   .consumerKey(TWITTER_CONSUMER_KEY)
@@ -52,6 +56,8 @@ everyauth.everymodule.handleLogout(routes.user.logout);
 everyauth.everymodule.findUserById( function (user, callback) {
   callback(user)
 });
+
+// EveryAuth Config End
 
 // Creating Express.js instance and assigning the title
 var app = express();
@@ -99,7 +105,7 @@ var authorize = function (req, res, next) {
 		return next();
 	} else {
 		console.log(req.session, req.session.admin);
-		return res.send(401);
+		return res.sendStatus(401);
 	}
 }
 

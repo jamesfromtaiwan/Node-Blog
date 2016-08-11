@@ -2,14 +2,13 @@ var mongoose = require('mongoose');
 var articleSchema = new mongoose.Schema({
 	title: {
 		type: String,
-		required: true,
-		validate: [
-			function (val) {
-				return val <= 120;
+		required: [true, 'Title is required.'],
+		validate: {
+			validator: function (val) {
+				return val.length <= 120;
 			},
-			'Title is too long (120 max)'
-		],
-		default: 'New Post'
+			message: 'Title is too long (120 max)'
+		}
 	},
 	text: String,
 	published: {

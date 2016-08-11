@@ -1,9 +1,14 @@
 // GET article 
 exports.show = function (req, res, next) {
+
 	if (!req.params.slug) { return next(new Error('No article slug!'))}
+
 	req.models.Article.findOne({slug: req.params.slug}, function (err, article) {
+
 		if (err) {return next(err)}
-		if (!article.published) { return res.send(401)}
+
+		if (!article.published) { return res.sendStatus(401)}
+
 		res.render('article', article);
 	});
 }
@@ -64,17 +69,23 @@ exports.post = function (req, res, next) {
 
 // POST route for the post page form
 exports.postArticle = function (req, res, next) {
-	if (!req.body.title || !req.body.slug || !req.body.text) {return res.render('post', {error: 'Fill title, slug and text.'});}
-	var article = {
-		title: req.body.title,
-		slug: req.body.slug,
-		text: req.body.text,
-		published: false
-	};
-	req.models.Article.create(article, function (err, articleResponse) {
-		if (err) {return next(err)}
-		res.render('post', {error: 'Article was added. Publish it in admin page.'});
-	});
+	var title 		= req.body.title,
+		slug 		= req.body.slug,
+		text 		= req.body.text,
+		published 	= false;
+ 
+	if (!title || !slug || !text) {return res.render('post', {error: 'Fill title, slug and text.'});}
+	
+	var article = new req.models.Article({title:title, slug: slug, text: text, published: published });
+	
+	article.save(function (err) {
+		if (err) { return next(err)}
+		res.render('post', {error: 'Aritcle was added. Publish it in the admin page'});
+	})
+	// req.models.Article.create(article, function (err, articleResponse) {
+	// 	if (err) {return next(err)}
+	// 	res.render('post', {error: 'Article was added. Publish it in admin page.'});
+	// });
 }
 
 // GET admin page in which we fetches all soprted article ({sort: {_id: -1}})
