@@ -148,20 +148,15 @@ var shutdown = function () {
 	server.close();
 };
 
-// For a file foo.js, this will be true if run via node foo.js, but false if run by require('./foo').
 if (require.main === module) {
 	console.log('Running app as an entry');
 	boot();
 } else {
 
 	console.log('Running app as a module');
-	exports.collectionArticles = db.articles;
 	exports.boot = boot;
 	exports.shutdown = shutdown;
 	exports.port = app.get('port');
 
 }
 
-// http.createServer(app).listen(app.get('port'), function () {
-// 	console.log('Node server is listening on port ' + app.get('port'));
-// });
